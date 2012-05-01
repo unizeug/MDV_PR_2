@@ -1,19 +1,60 @@
-%%This is a very basic article template.
-%%There is just one section and two subsections.
-\documentclass{article}
+\newcommand{\institut}{Institut f\"ur Energie und Automatisiertungstechnik}
+\newcommand{\fachgebiet}{Elektronische Mess- und Diagnosetechnik}
+\newcommand{\veranstaltung}{Praktikum Messdatenverarbeitung}
+\newcommand{\pdfautor}{Dirk Babendererde (321 836), Thomas Kapa (325 219)}
+\newcommand{\autor}{Dirk Babendererde (321 836)\\ Thomas Kapa (325 219)}
+\newcommand{\pdftitle}{Praktikum Messdatenverarbeitung Termin 2}
+\newcommand{\prototitle}{Praktikum Messdatenverarbeitung \\ Termin 2}
+\newcommand{\aufgabe}{}
 
-\begin{document}
+
+\newcommand{\gruppe}{Gruppe: G2 Fr 08-10}
+\newcommand{\betreuer}{Betreuer: J\"urgen Funk}
 
 
-\section{Title}
 
-\subsection{Subtitle}
+\input{../../../packages/tu_header_8}
 
-Plain text.
 
-\subsection{Another subtitle}
+% \lstlistoflistings
+\definecolor{darkgray}{rgb}{0.95,0.95,0.95}
+\lstset{language=Scilab}
+\lstset{inputencoding=utf8}
+%\lstset{extendedchars=true} % Umlaute an der richtigen stelle und nicht am Anfang ausgeben
+\lstset{backgroundcolor=\color{darkgray}}
+\lstset{numbers=left, numberstyle=\tiny, stepnumber=1, numbersep=7pt, breaklines=true}
+\lstset{keywordstyle=\color{red}\bfseries\emph}
+\lstset{
+breaklines,
+numbers=left,
+frame=single,
+xleftmargin=-2cm,
+xrightmargin=-1.5cm
+}
+% enables UTF-8 in source code: (dirty, dirty hack)
+\lstset{literate=
+    %Deutsch
+    {ä}{{\"a}}1 {ö}{{\"o}}1 {ü}{{\"u}}1 {Ä}{{\"A}}1 {Ö}
+    {{\"O}}1 {Ü}{{\"U}}1 {ß}{\ss}1
+    %Türkisch
+    {â}{{\^{a}}}1 {Â}{{\^{A}}}1 {ç}{{\c{c}}}1 {Ç}{{\c{C}}}1 {ğ}{{\u{g}}}1 {Ğ}{{\u{G}}}1 {ı}{{\i}}1 {İ}{{\.{I}}}1 {ö}{{\"o}}1 {Ö}{{\"O}}1 {ş}{{\c{s}}}1
+    {Ş}{{\c{S}}}1 {ü}{{\"u}}1 {Ü}{{\"U}}1
+    %Polish
+    {ą}{{\k{a}}}1 {ć}{{\'c}}1 {ę}{{\k{e}}}1 {ł}{{\l{}}}1 {ń}{{\'n}}1 {ó}{{\'o}}1 {ś}{{\'s}}1 {ż}{{\.z}}1 {ź}{{\'z}}1 {Ą}{{\k{A}}}1 {Ć}{{\'C}}1
+    {Ę}{{\k{E}}}1 {Ł}{{\L{}}}1 {Ń}{{\'N}}1 {Ó}{{\'O}}1 {Ś}{{\'S}}1 {Ż}{{\.Z}}1 {Ź}{{\'Z}}1
+    %Spanish
+    {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1
+}
 
-More plain text.
+%     \lstinputlisting{./praktikum6.sce}
+
+
+
+%---------------------------------------------------------------------
+%---------------------------------------------------------------------
+%---------------------------------------------------------------------
+
 
 
 \end{document}
+
