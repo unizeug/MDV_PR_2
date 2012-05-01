@@ -41,8 +41,6 @@ ISR(ADC_vect) {
 
 }
 
-
-
 void adcInit() {
 
 	ADCSRA	|= (1<<ADEN); //ADU anschalten
