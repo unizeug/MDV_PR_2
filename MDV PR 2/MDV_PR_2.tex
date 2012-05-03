@@ -8,6 +8,7 @@
 \newcommand{\aufgabe}{}
 
 
+
 \newcommand{\gruppe}{Gruppe: G2 Fr 08-10}
 \newcommand{\betreuer}{Betreuer: J\"urgen Funk}
 
@@ -52,6 +53,39 @@ xrightmargin=-1.5cm
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
+
+\section{Vorbereitung}
+\begin{quote}
+    \subsection{Abtastrate}
+    \begin{quote}
+        
+        Die CPU-Taktfreqenz wird (wie eingestellt) durch 32 geteilt um den ADU-Takt zu erhalten. Nun braucht der ADU 13 Takte für eine Umsetzung.
+        Daraus folgt:
+        
+        $\frac{1}{\frac{32 \p 13}{7,3 \p 10^6}} \approx 17,5 kHz$
+        
+    \end{quote}
+
+    \subsection{Sourcecode}
+    \begin{quote}
+    \lstinputlisting[
+        caption={C-script},
+        label=lst:c-vorbereitung]
+        {./C/adu.c}
+        
+    \end{quote}
+    
+
+
+    
+    
+\end{quote}
+
+
+
+
+
+
 
 \bq
 \lstinputlisting{./C/adc.c}

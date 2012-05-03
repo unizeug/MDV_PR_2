@@ -16,7 +16,8 @@
 
 
 /*** GLOBAL VARIABLES ***/
-// wir initialisieren eine 32-Bit Zählvariable um später die Anzahl der noch durchzuführenden Wandlungen zu speichern.
+// wir initialisieren eine 32-Bit Zählvariable um später die Anzahl der noch
+// durchzuführenden Wandlungen zu speichern.
 uint32_t SAMPLE_COUNTER = 0;
 
 
@@ -27,7 +28,8 @@ ISR(TIMER1_COMPA_vect) {
 ISR(TIMER1_COMPB_vect) {
 }
 
-// dieser interrupt wird ausgeführt, wenn der ADU mit einer umsetzung feritg ist
+
+// dieser interrupt wird ausgeführt, wenn der ADU mit einer Umsetzung feritg ist
 ISR(ADC_vect) {
 
 	// der Wert des ADU wird ausgelesen
@@ -51,41 +53,52 @@ ISR(ADC_vect) {
 
 void adcInit() {
 
-	ADCSRA	|= (1<<ADEN); //ADU anschalten
-	ADMUX	|= (1<<REFS1)|(1<<REFS0);	//2.56V Referenzspannung
-	ADCSRA	|= (1<<ADPS2)|(1<<ADPS0);	//takt auf 1/32
-	ADCSRA	|= (1<<ADIE);	//ADC Interrupt anschalten
-	ADCSRA	|= (1<<ADATE); //auto trigger aktivieren
-	//Für den Free-running Modus müssen ADTS0,1,2 im Register ADCSRB auf null gesetzt sein, da aber schon normal auf null kein Problem
-	//die default Eigenschaft ist, dass der ADC0 Channel benutzt wird
-    //für den Single-Ended-Modus mit Kanal ADC0 muss ADMUX muss MUX4:0 muss auf 0 gesetzt werden, MUX0,1,2,3
-	ADCSRA	|= (1<<ADSC); // startet den ADU beim freerunner, start single conversion
-    ADCSRB  |= (1<<ADTS2)|(1<<ADTS0); //Umsetzung startet durch einen Compare Match von Timer1
+	ADCSRA	|= (1<<ADEN);                //ADU anschalten
+	ADMUX	|= (1<<REFS1)|(1<<REFS0);    //2.56V Referenzspannung
+	ADCSRA	|= (1<<ADPS2)|(1<<ADPS0);    //takt auf 1/32
+	ADCSRA	|= (1<<ADIE);                //ADC Interrupt anschalten
+	ADCSRA	|= (1<<ADATE);               //auto trigger aktivieren
+	// Für den Free-running Modus müssen ADTS0,1,2 im Register ADCSRB auf null
+	// gesetzt sein, da aber schon normal auf null kein Problem
+	// die default Eigenschaft ist, dass der ADC0 Channel benutzt wird
+    // für den Single-Ended-Modus mit Kanal ADC0 muss ADMUX muss MUX4:0 muss
+    // auf 0 gesetzt werden, MUX0,1,2,3
+	ADCSRA	|= (1<<ADSC);                 // startet den ADU beim freerunner, start single conversion
+    ADCSRB  |= (1<<ADTS2)|(1<<ADTS0);     //Umsetzung startet durch einen Compare Match von Timer1B
 
 }
 
 
 
 void adcStart(uint16_t sampleRateCode, uint32_t sampleCount, trigger_t triggerMode, int16_t triggerLevel) {
+
+    // Interrups ausschalten, damit hier nicht unterbrochen wird
 	cli();
 
-	//sampleCounter auf den gewünschten wert setzen
+	// sampleCounter auf den gewünschten wert setzen
 	SAMPLE_COUNTER = sampleCount;
 
-	// die semplerate auf den übergebenen wert setzen
-	OCR1A =  sampleRateCode;
 
-	// Clock auf non-prescaling, betrieben mit CPU-Takt
+	// die semplerate auf den übergebenen wert setzen
+	// löst den CTC aus
+	OCR1A =  sampleRateCode;
+    
+    // löst den Interrupt aus um um zu setzen
+    OCR1B =  sampleRateCode;
+
+
+	// Clock des Timers auf non-prescaling (betreiben mit CPU-Takt)
 	TCCR1B |=(1<<CS10);
 
-	//CTC Mode
+	// CTC Mode (Clear on Compare)
+	// Timer1 wird auf null gesetzt wenn er == OCR1A ist
 	TCCR1B |=(1<<WGM12);
-
 
 	// Timer startet bei 0
 	TCNT1 = 0 ;
 
-	// Timer Output Compare Interrupt B aktivieren
+	// Timer Output Compare Interrupt B aktivieren,
+	// sodass wenn der timer den Wert in 
 	TIMSK1 = (1<<OCIE1A);
 
 	// kein Output/Compare
@@ -97,7 +110,7 @@ void adcStart(uint16_t sampleRateCode, uint32_t sampleCount, trigger_t triggerMo
 
 uint8_t adcIsRunning() {
 
-	// Überprüfung ob aktuell noch umsetzungen gemscht werden müssen
+	// Überprüfung ob aktuell noch umsetzungen gemacht werden müssen
 	if(SAMPLE_COUNTER==0){
 		return 0;
 	} else {
